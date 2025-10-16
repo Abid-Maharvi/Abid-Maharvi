@@ -58,17 +58,8 @@ My focus lies in understanding how the human brain perceives language through ne
 **Lab Engineer** — *National University of Sciences and Technology (NUST), Quetta*
 *Jul 2019 – Present*
 
-* Teaching & supervising lab courses (AI, Networks, OS, DLD, etc.)
-* Research support for EEG, IoT, and AI-based projects
-* Technical workshops on Arduino, IoT, and microcontrollers
-* Mentored students achieving top positions in programming competitions
-
 **A/CMS Coordinator (ERP/AM App)** — *NUST Quetta*
 *Feb 2024 – Sep 2024*
-
-* Implemented and managed ERP & CMS using **Odoo** platform
-* Developed academic modules for admissions, records, and performance
-* Conducted faculty and staff training sessions
 
 **IT Support Officer** — *MGA Industries Pvt. Ltd., Lahore*
 *May 2019 – Jul 2019*
