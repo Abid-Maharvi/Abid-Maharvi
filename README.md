@@ -118,9 +118,133 @@ National University of Sciences and Technology (NUST), Quetta
 📧 [abidmaharvi@hotmail.com](mailto:abidmaharvi@hotmail.com)
 🔗 [Google Scholar](https://scholar.google.com.pk/citations?user=K-B3pSIAAAAJ&hl=en) | [LinkedIn](https://www.linkedin.com/in/engr-muhammad-abid-hussain-60b6a2124/)
 
+
 ---
 
-## 🏅 License / Credits
+## 🫁 AI-Powered Disease Detection from Chest X-ray Images (Pneumonia)
+
+### Overview
+
+A deep learning pipeline for **binary classification** of chest X-ray images
+into **NORMAL** and **PNEUMONIA** categories, built with Python / TensorFlow
+and transfer learning on **ResNet50** (ImageNet pre-trained weights).
+
+### Project Structure
+
+```
+pneumonia_detection/
+├── __init__.py        # Package entry-point
+├── config.py          # Hyper-parameters, paths, and constants
+├── preprocess.py      # Data loading, augmentation, and single-image preprocessing
+├── model.py           # ResNet50-based classifier (transfer learning)
+├── train.py           # Two-stage training pipeline
+├── evaluate.py        # Metrics, confusion matrix, ROC curve
+└── predict.py         # Single-image and batch inference
+
+app.py                 # Streamlit web demo
+requirements.txt       # Python dependencies
+tests/
+└── test_pneumonia_detection.py   # Unit tests
+```
+
+### Dataset
+
+**Chest X-Ray Images (Pneumonia)** — Kaggle  
+<https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia>
+
+Download and extract the dataset so that the directory layout is:
+
+```
+data/
+└── chest_xray/
+    ├── train/
+    │   ├── NORMAL/
+    │   └── PNEUMONIA/
+    ├── val/
+    │   ├── NORMAL/
+    │   └── PNEUMONIA/
+    └── test/
+        ├── NORMAL/
+        └── PNEUMONIA/
+```
+
+### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+### Training
+
+```bash
+python -m pneumonia_detection.train
+```
+
+Training runs in **two stages**:
+
+| Stage | Base | LR | Purpose |
+|-------|------|----|---------|
+| 1 — Feature extraction | Frozen | 1e-4 | Train the custom head only |
+| 2 — Fine-tuning | Partially unfrozen (top layers) | 1e-5 | Refine the whole network |
+
+The best model (by validation AUC) is saved to `models/pneumonia_resnet50.keras`.
+
+### Evaluation
+
+```bash
+python -m pneumonia_detection.evaluate
+```
+
+Prints accuracy, AUC, precision, recall, and F1 on the test set, and saves
+`confusion_matrix.png` and `roc_curve.png` under `models/`.
+
+### Inference
+
+```bash
+# Single image from the command line
+python -m pneumonia_detection.predict --image path/to/xray.jpg
+
+# From Python
+from pneumonia_detection.predict import predict_image
+result = predict_image("path/to/xray.jpg")
+# {'label': 'PNEUMONIA', 'confidence': 0.92, 'probability': 0.92}
+```
+
+### Web Application (Streamlit)
+
+```bash
+streamlit run app.py
+```
+
+Upload any chest X-ray image in the browser and receive an instant prediction
+with a confidence score.
+
+> ⚠️ **Disclaimer:** For research and educational purposes only. Not a
+> substitute for professional medical advice.
+
+### Running Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+### Model Architecture
+
+```
+Input (224 × 224 × 3)
+       │
+  ResNet50 (ImageNet, top removed)
+       │
+  GlobalAveragePooling2D
+       │
+  Dense(256, relu)
+       │
+  Dropout(0.5)
+       │
+  Dense(1, sigmoid)  →  P(PNEUMONIA)
+```
+
+
 
 © 2025 Muhammad Abid Hussain — All rights reserved.
 For academic and research purposes only.
