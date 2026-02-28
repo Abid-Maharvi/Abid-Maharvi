@@ -104,6 +104,14 @@ def train() -> tf.keras.Model:
     stage1_path = config.MODEL_PATH.replace(".keras", "_stage1.keras")
     if os.path.exists(stage1_path):
         model.load_weights(stage1_path)
+    else:
+        import warnings
+        warnings.warn(
+            f"Stage 1 checkpoint not found at {stage1_path!r}. "
+            "Fine-tuning will start from randomly initialised weights.",
+            UserWarning,
+            stacklevel=2,
+        )
 
     model.fit(
         train_gen,

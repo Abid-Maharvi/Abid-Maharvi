@@ -161,8 +161,8 @@ class TestBuildModel:
         model = build_model(trainable_base=False, weights=None)
         # The ResNet50 base sub-model should have no trainable weights
         base = next(
-            l for l in model.layers
-            if hasattr(l, "layers")  # it's a nested model
+            layer for layer in model.layers
+            if hasattr(layer, "layers")  # it's a nested model
         )
         assert not any(w.trainable for w in base.trainable_weights)
 
@@ -171,9 +171,9 @@ class TestBuildModel:
         from pneumonia_detection import config
         from pneumonia_detection.model import build_model
         model = build_model(trainable_base=True, weights=None)
-        base = next(l for l in model.layers if hasattr(l, "layers"))
-        trainable_layers = [l for l in base.layers if l.trainable]
-        frozen_layers = [l for l in base.layers if not l.trainable]
+        base = next(layer for layer in model.layers if hasattr(layer, "layers"))
+        trainable_layers = [layer for layer in base.layers if layer.trainable]
+        frozen_layers = [layer for layer in base.layers if not layer.trainable]
         assert len(trainable_layers) > 0, "At least some layers must be trainable"
         assert len(frozen_layers) > 0, "At least some layers must stay frozen"
 

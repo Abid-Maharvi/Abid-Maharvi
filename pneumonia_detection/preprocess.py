@@ -29,8 +29,16 @@ from pneumonia_detection import config
 
 def compute_class_weights(train_dir: str) -> dict:
     """Return {0: w_normal, 1: w_pneumonia} weights to offset class imbalance."""
-    normal_count = len(os.listdir(os.path.join(train_dir, "NORMAL")))
-    pneumonia_count = len(os.listdir(os.path.join(train_dir, "PNEUMONIA")))
+    _img_exts = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif"}
+
+    def _count_images(directory: str) -> int:
+        return sum(
+            1 for f in os.listdir(directory)
+            if os.path.splitext(f.lower())[1] in _img_exts
+        )
+
+    normal_count = _count_images(os.path.join(train_dir, "NORMAL"))
+    pneumonia_count = _count_images(os.path.join(train_dir, "PNEUMONIA"))
     total = normal_count + pneumonia_count
     # sklearn-style balanced weights: n_samples / (n_classes * n_samples_class)
     weight_normal = total / (2.0 * normal_count)
